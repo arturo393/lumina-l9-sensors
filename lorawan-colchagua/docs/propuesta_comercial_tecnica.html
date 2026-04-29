@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propuesta técnica de la arquitectura de hardware y conectividad</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Inter:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a2a40;
+            --slate: #4a5568;
+            --silver: #edf2f7;
+            --accent-blue: #2b6cb0;
+            --border-gray: #cbd5e0;
+            --text-dark: #2d3748;
+            --text-light: #ffffff;
+            --green-muted: #f0fff4;
+            --blue-muted: #ebf8ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: #ffffff;
+            color: var(--text-dark);
+            line-height: 1.5;
+            print-color-adjust: exact;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 4rem;
+        }
+
+        header {
+            border-bottom: 2px solid var(--navy);
+            padding-bottom: 2rem;
+            margin-bottom: 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .header-title h1 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.85rem;
+            color: var(--navy);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.3rem;
+        }
+
+        .header-subtitle {
+            font-size: 0.95rem;
+            color: var(--slate);
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-metadata {
+            font-size: 0.7rem;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .doc-meta {
+            display: none;
+        }
+
+        section {
+            margin-bottom: 3.5rem;
+        }
+
+        h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.25rem;
+            color: var(--navy);
+            border-left: 4px solid var(--navy);
+            padding-left: 1rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .option-card {
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 1.5rem;
+            background-color: var(--navy);
+            color: white;
+            text-align: center;
+        }
+
+        .card-header h3 {
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .card-body {
+            padding: 2rem;
+            flex-grow: 1;
+        }
+
+        .price-banner {
+            background-color: var(--silver);
+            padding: 1rem;
+            text-align: center;
+            font-weight: 700;
+            color: var(--navy);
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .spec-list {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .spec-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            font-size: 0.9rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-dark);
+        }
+
+        .spec-list li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--accent-blue);
+            font-weight: bold;
+        }
+
+        .spec-list.warning li::before {
+            content: "•";
+            color: var(--slate);
+        }
+
+        .image-container {
+            width: 100%;
+            border: 1px solid var(--border-gray);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            background-color: #fcfcfc;
+        }
+
+        .image-container img {
+            width: 100%;
+            display: block;
+        }
+
+        .staging-box {
+            background-color: var(--green-muted);
+            border: 1px solid #c6f6d5;
+            padding: 2rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .milestone-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .milestone {
+            padding: 1.25rem;
+            background-color: var(--silver);
+            border-radius: 4px;
+            border-top: 3px solid var(--navy);
+        }
+
+        .milestone-num {
+            font-weight: 700;
+            color: var(--accent-blue);
+            font-size: 0.75rem;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .milestone-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .milestone-body {
+            font-size: 0.8rem;
+            color: var(--slate);
+        }
+
+        footer {
+            margin-top: 4rem;
+            font-size: 0.8rem;
+            color: var(--slate);
+            text-align: center;
+            border-top: 1px solid var(--border-gray);
+            padding-top: 2rem;
+        }
+
+        .footer-disclaimer {
+            margin-top: 1rem;
+            font-style: italic;
+        }
+
+        /* Optimization for A4 Print/PDF */
+        @media screen and (max-width: 850px) {
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+
+            .doc-meta {
+                text-align: left;
+                width: 100%;
+                border-top: 1px solid var(--border-gray);
+                padding-top: 1rem;
+            }
+
+            .header-title h1 {
+                font-size: 1.8rem;
+                line-height: 1.2;
+            }
+
+            .milestone-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 8mm;
+            }
+
+            /* Side-by-side comparison for narrow screens */
+            .comparison-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                margin: 10mm 15mm;
+            }
+
+            body {
+                background: white;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                font-size: 9.5pt;
+                /* Slightly smaller for better fit */
+            }
+
+            .container {
+                max-width: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            header {
+                margin-bottom: 5mm;
+            }
+
+            section {
+                margin-bottom: 8mm;
+                padding: 0;
+            }
+
+            /* Side-by-side in print */
+            .comparison-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 6mm !important;
+            }
+
+            .image-container {
+                border: none;
+                margin: 4mm 0;
+                background: none;
+            }
+
+            .image-container img {
+                width: 100% !important;
+                height: auto !important;
+                max-height: 85mm;
+                object-fit: contain;
+                display: block;
+                margin: 0 auto;
+            }
+
+            .roadmap-section {
+                page-break-before: always;
+                padding-top: 10mm;
+            }
+
+            .milestone-grid {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 8mm !important;
+            }
+
+            footer {
+                position: relative;
+                margin-top: 15mm;
+                border-top: 1px solid #eee;
+                padding-top: 6mm;
+            }
+
+            .option-card {
+                border: 1px solid #ddd;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <header style="flex-direction: column; align-items: flex-start;">
+            <div class="header-title">
+                <h1>Propuesta Técnica: Telemetría de Caudales y Aguas</h1>
+                <p class="header-subtitle">Modernización de Canales - Valle de Colchagua</p>
+                <p class="header-metadata">Ref: PR-COL-V2 | Actualizado: 17 de Marzo, 2026 | Vigencia: 15 días</p>
+            </div>
+        </header>
+
+        <section>
+            <h2>Esquema de Solución</h2>
+            <div class="image-container">
+                <img src="./architecture_diagram.png" alt="Esquema de Arquitectura">
+            </div>
+            <p>El sistema utiliza telemetría radar de alta frecuencia para la medición de nivel sin contacto,
+                transmitiendo vía LoRaWAN privada hacia la red Starlink del cliente para su centralización de datos
+                en plataforma AWS.</p>
+        </section>
+
+        <section>
+            <h2>Etapa Preliminar: Laboratorio y Calibración</h2>
+            <div class="staging-box">
+                <h3 style="font-size: 1.1rem; color: #22543d; margin-bottom: 1rem;">Marcha Blanca (Entorno Controlado)
+                </h3>
+                <p style="font-size: 0.95rem; color: #276749; margin-bottom: 1.5rem;">Previo al despliegue en terreno,
+                    todos los equipos pasan por un proceso de configuración y validación en laboratorio para asegurar
+                    el correcto funcionamiento de la red.</p>
+                <ul class="spec-list" style="color: #276749;">
+                    <li>Provisionamiento de llaves EUI y registro en Network Server.</li>
+                    <li>Ciclo de prueba de transmisión continua (48 horas).</li>
+                    <li>Pre-configuración de offsets y factores de aforo según planos de canalización.</li>
+                </ul>
+                <p style="font-weight: 700; color: #22543d;">Inversión Fase 0: 8.0 UF (Fijo)</p>
+            </div>
+        </section>
+
+        <section>
+            <h2>Comparativa de Alternativas Tecnológicas</h2>
+            <div class="comparison-grid">
+                <!-- Alternativa 1 -->
+                <div class="option-card">
+                    <div class="card-header">
+                        <h3>Opción A: Industrial Pro</h3>
+                    </div>
+                    <div class="price-banner">45.0 UF (Equipamiento + Puesta en Marcha)</div>
+                    <div class="card-body">
+                        <p style="font-size: 0.85rem; color: var(--slate); margin-bottom: 1.5rem;">Basado en Ecosistema
+                            Milesight. Orientado a continuidad operacional crítica.</p>
+
+                        <!-- Comparativa Técnica Interna -->
+                        <div
+                            style="background: white; border: 1px solid var(--border-gray); padding: 1rem; border-radius: 4px; margin-bottom: 1.5rem;">
+                            <p
+                                style="font-size: 0.75rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; text-transform: uppercase;">
+                                Diferenciadores Clave vs Estándar</p>
+                            <table style="width: 100%; font-size: 0.75rem; border-collapse: collapse;">
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 0.4rem 0; font-weight: 600;">Configuración</td>
+                                    <td style="padding: 0.4rem 0; color: var(--accent-blue);">NFC (Sin abrir equipo)
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 0.4rem 0; font-weight: 600;">Protección</td>
+                                    <td style="padding: 0.4rem 0; color: var(--accent-blue);">IP67 Industrial Sólido
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #eee;">
+                                    <td style="padding: 0.4rem 0; font-weight: 600;">Ecosistema</td>
+                                    <td style="padding: 0.4rem 0; color: var(--accent-blue);">Gestión Unificada Hub</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <ul class="spec-list">
+                            <li><strong>Radar Industrial:</strong> EM410-RDL (60GHz FMCW). Inmune a obstrucciones
+                                biológicas (telarañas).</li>
+                            <li><strong>Gateway Outdoor:</strong> UG67 (IP67). Protección extrema contra radiación UV y
+                                lluvia.</li>
+                            <li><strong>Autonomía:</strong> Baterías Premium con duración estimada de 8-10 años.</li>
+                        </ul>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--navy);">Punto adicional: 18.5 UF
+                            (Incluye Equipo)</p>
+                    </div>
+                </div>
+
+                <!-- Alternativa 2 -->
+                <div class="option-card" style="border-color: var(--border-gray);">
+                    <div class="card-header" style="background-color: var(--slate);">
+                        <h3>Opción B: Estándar / Agnóstica</h3>
+                    </div>
+                    <div class="price-banner">28.0 UF (Equipamiento + Puesta en Marcha)</div>
+                    <div class="card-body">
+                        <p style="font-size: 0.85rem; color: var(--slate); margin-bottom: 1.5rem;">Basado en componentes
+                            Dragino. Equilibrio costo-rendimiento para validaciones.</p>
+                        <ul class="spec-list warning">
+                            <li><strong>Sensor Ultrasónico:</strong> LDDS75. Medición por pulso sónico con compensación
+                                térmica.</li>
+                            <li><strong>Gateway Compacto:</strong> LPS8v2. Ideal para montajes en armarios o zonas
+                                resguardadas.</li>
+                            <li><strong>Versatilidad:</strong> Hardware abierto compatible con diversos protocolos
+                                Cloud.</li>
+                        </ul>
+                        <p style="font-size: 0.9rem; font-weight: 600; color: var(--slate);">Punto adicional: 9.5 UF
+                            (Incluye Equipo)</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="roadmap-section">
+            <h2>Hoja de Ruta de Implementación</h2>
+            <div class="milestone-grid">
+                <div class="milestone">
+                    <span class="milestone-num">HITO 0</span>
+                    <p class="milestone-title">Marcha Blanca</p>
+                    <p class="milestone-body">Inscripción técnica y pruebas de laboratorio de los nodos.</p>
+                </div>
+                <div class="milestone">
+                    <span class="milestone-num">HITO 1</span>
+                    <p class="milestone-title">Red Core</p>
+                    <p class="milestone-body">Instalación de Gateways sobre Starlink del cliente.</p>
+                </div>
+                <div class="milestone">
+                    <span class="milestone-num">HITO 2</span>
+                    <p class="milestone-title">Despliegue</p>
+                    <p class="milestone-body">Montaje de sensores y calibración de curvas de aforo.</p>
+                </div>
+                <div class="milestone">
+                    <span class="milestone-num">HITO 3</span>
+                    <p class="milestone-title">Entrega y QA</p>
+                    <p class="milestone-body">Validación de datos en AWS y entrega de Dashboard final.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>Propuesta preparada para el Valle de Colchagua por el Equipo de Ingeniería Consultora.</p>
+            <p class="footer-disclaimer">Precios en Unidades de Fomento (UF). No incluye IVA ni infraestructura Starlink
+                provista por el cliente.</p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

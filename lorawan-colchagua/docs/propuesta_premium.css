@@ -1,0 +1,118 @@
+/* Propuesta Premium - CSS for Markdown PDF */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --navy: #1a2a40;
+    --slate: #4a5568;
+    --accent: #2b6cb0;
+    --border: #e2e8f0;
+    --bg-light: #f8fafc;
+}
+
+body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif !important;
+    font-size: 11pt;
+    line-height: 1.6;
+    color: #1e293b;
+    padding: 2mm;
+}
+
+h1 {
+    color: var(--navy);
+    font-size: 24pt;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-bottom: 3px solid var(--navy);
+    margin-bottom: 20pt;
+    padding-bottom: 10pt;
+}
+
+h2 {
+    color: var(--navy);
+    font-size: 16pt;
+    border-left: 5px solid var(--navy);
+    padding-left: 10pt;
+    margin-top: 30pt;
+    margin-bottom: 15pt;
+    text-transform: uppercase;
+}
+
+h3 {
+    color: var(--accent);
+    font-size: 13pt;
+    margin-top: 20pt;
+}
+
+blockquote {
+    border-left: 4px solid var(--accent);
+    background: var(--bg-light);
+    padding: 10pt 15pt;
+    margin: 15pt 0;
+    font-style: italic;
+    color: var(--slate);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20pt 0;
+}
+
+th {
+    background: var(--navy);
+    color: white;
+    text-align: left;
+    padding: 10pt;
+    font-weight: 600;
+}
+
+td {
+    border-bottom: 1px solid var(--border);
+    padding: 10pt;
+}
+
+tr:nth-child(even) {
+    background: #fcfcfc;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    margin: 20pt 0;
+}
+
+hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 30pt 0;
+}
+
+/* Custom Grid for side-by-side content */
+.comparison-container {
+    display: flex;
+    gap: 20pt;
+    margin: 20pt 0;
+}
+
+.option-box {
+    flex: 1;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 15pt;
+    background: white;
+}
+
+.price-tag {
+    font-weight: 800;
+    font-size: 14pt;
+    color: var(--navy);
+    margin-bottom: 10pt;
+    display: block;
+}
+
+/* Page Break Utility */
+.page-break {
+    page-break-before: always;
+}
